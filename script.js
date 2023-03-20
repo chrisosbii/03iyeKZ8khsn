@@ -10,6 +10,7 @@ function generatePassword() {
   // instance vars here
   var input = "";
   var length = 0;
+  var ret = "";
 
   //prompt for length of password 8 < x < 128
   length = getLength();
@@ -17,6 +18,14 @@ function generatePassword() {
   //prompt for lowercase, uppercase, numeric, and/or special characters
   input = charTypes();
 
+  //check if legLength and charTypes are working propperly
+  //console.log(length + " : " + input);
+
+  //do magic math functions
+  for (var i = 0, n = input.length; i < length; i++){
+    ret += charset.charAt(Math.floor(Math.random()*n));
+  }
+  return ret;
 }
 
 /**
@@ -29,10 +38,10 @@ function getLength(){
   var bool = true;
   do{
     //prompt user for length
-    ret = window.prompt("Please input a number which represents the length of your password. The number should be at least 8 and less then 128", 8);
+    ret = parseInt(window.prompt("Please input a number which represents the length of your password. The number should be at least 8 and less then 128", 8));
 
     //check if input is a number
-    if (typeof ret == "string")
+    if (ret == NaN)
       window.alert("Please input a number");
     else if (ret < 8) //check if input is at least 8 (>=) 
       window.alert("Please input a number greater then or equal to 8");
