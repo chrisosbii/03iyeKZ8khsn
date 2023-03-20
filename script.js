@@ -12,11 +12,18 @@ function generatePassword() {
   var length = 0;
 
   //prompt for length of password 8 < x < 128
+  length = getLength();
 
   //prompt for lowercase, uppercase, numeric, and/or special characters
+  input = charTypes();
 
 }
 
+/**
+ * function to prompt user for length of password
+ * needs to be equal to or greater then 8
+ * needs to be less then 128
+ */
 function getLength(){
   var ret = 0;
   var bool = true;
@@ -35,6 +42,35 @@ function getLength(){
       break;
   }while(true);
   //check if input is a number
+  return ret;
+}
+
+/**
+ * uses alerts to find out what types of characters you want to use
+ */
+function charTypes(){
+  var ret = "";
+  do{
+    //alert user to action needed
+    window.alert("Please select a type of character to use for the password");
+    //prompt for lower
+    if(window.confirm("Do you want to use lower case letters?"))
+      ret += lower;
+    //prompt for upper
+    if(window.confirm("Do you want to use upper case letters?"))
+    ret += upper;
+    //prompt for numbers
+    if(window.confirm("Do you want to use numbers?"))
+      ret += nums;
+    //prompt for special chars
+    if(window.confirm("Do you want to use Special Characters?"))
+      ret += special;
+    //check if ret has values
+    if(ret.length > 0)
+      break;
+    //if length is not greater then 0 tell user they messed up
+    window.alert("You did not select anything...");
+  }while(true);
   return ret;
 }
 
