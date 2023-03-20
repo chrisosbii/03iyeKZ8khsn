@@ -23,8 +23,9 @@ function generatePassword() {
 
   //do magic math functions
   for (var i = 0, n = input.length; i < length; i++){
-    ret += charset.charAt(Math.floor(Math.random()*n));
+    ret += input.charAt(Math.floor(Math.random()*n));
   }
+  console.log(ret);
   return ret;
 }
 
@@ -43,14 +44,13 @@ function getLength(){
     //check if input is a number
     if (ret == NaN)
       window.alert("Please input a number");
-    else if (ret < 8) //check if input is at least 8 (>=) 
+    else if (ret < 8) //check if input is at least 8 (x >= 8) 
       window.alert("Please input a number greater then or equal to 8");
-    else if (ret > 128) //check if input is more then 128 (<)
+    else if (ret > 128) //check if input is more then 128 (x < 128)
         window.alert("Please input a number less then 128");
     else
       break;
   }while(true);
-  //check if input is a number
   return ret;
 }
 
