@@ -1,14 +1,12 @@
-// Assignment code here
-
-// global vals
+// global strings for character types to use
 var lower = "abcdefghijklmnopqrstuvwxyz";
 var upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var nums = "0123456789";
 var special = " !\"#$&%'()*+,-./:;<=>?@[\\]^_`{|}";
 
-
 /**
- * 
+ * Main call fuction to generate a password
+ * uses getLength, charTypes, and createPassword functions
  * @returns a randomly generated password based on user inputs
  */
 function generatePassword() {
@@ -86,6 +84,9 @@ function getLength(){
 
 /**
  * uses alerts to find out what types of characters you want to use
+ * returns the full character list and tracks the count of each new area of the list starting at 0
+ * If the end user does not select an option count is not increased so it will cycle through the promps again
+ * 
  * @returns [combined baseChars for a password, Array of numbers representing endpoint of added arrays of characters]
  */
 function charTypes(){
