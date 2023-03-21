@@ -75,7 +75,7 @@ function getLength(){
     else if (ret < 8) //check if input is at least 8 (x >= 8) 
       window.alert("Please input a number greater then or equal to 8");
     else if (ret > 128) //check if input is more then 128 (x < 128)
-        window.alert("Please input a number less then 128");
+        window.alert("Please input a number no more then 128");
     else
       break;
   }while(true);
@@ -115,7 +115,7 @@ function charTypes(){
       ret += nums;
     }
     //prompt for special chars
-    if(window.confirm("Do you want to use Special Characters?")){
+    if(window.confirm("Do you want to use special characters?")){
       count = count + special.length;
       counts.push(count);
       ret += special;
