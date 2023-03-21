@@ -9,115 +9,27 @@ var special = " !\"#$&%'()*+,-./:;<=>?@[\\]^_`{|}";
 
 /**
  * 
- * @returns a randomly generated password
+ * @returns a randomly generated password based on user inputs
  */
 function generatePassword() {
-  // instance vars here
-  var input = "";
-  var length = 0;
-  var ret = "";
-  var temp;
-  var seperateBaseChars = [0,0,0,0];
-  var totals = [0,0,0,0];
-  var bools = [false, false, false, false];
-
-
-
   //prompt for length of password 8 < x < 128
-  length = getLength();
+  var length = getLength();
 
   //prompt for lowercase, uppercase, numeric, and/or special characters
-  input = charTypes();
-  baseChars = input[0];
+  var input = charTypes();
 
-  //setup seperateBaseChars for checking which char was used for validating password
-  //check if lower was used if used add length to the seperateBaseChars Array
-  if(input[1] >= 8){
-    seperateBaseChars[0] = lower.length;
-    input[1] = input[1] - 8;
-    bools[0] = true;
-  }
-  //check if upper was used if used add length to the seperateBaseChars Array
-  if(input[1] >= 4){
-    seperateBaseChars[1] = seperateBaseChars[0] + upper.length;
-    input[1] = input[1] - 4;
-    bools[1] = true;
-  }
-  else{
-    seperateBaseChars[1] = seperateBaseChars[0];
-  }
-  //check if nums where used if used add length to the seperateBaseChars Array
-  if(input[1] >= 2){
-    seperateBaseChars[2] = seperateBaseChars[1] + nums.length;
-    input[1] = input[1] - 2;
-    bools[2] = true;
-  }
-  else{
-    seperateBaseChars[2] = seperateBaseChars[1];
-  }
-  //check if special was used if used add length to the seperateBaseChars Array
-  if(input[1] >= 1){
-    seperateBaseChars[3] = seperateBaseChars[2] + special.length;
-    bools[3] = true;
-  }
-  else{
-    seperateBaseChars[3] = seperateBaseChars[2];
-  }
-  console.log(seperateBaseChars.concat(", "));
-
-  //instantiate keepGoing
-  var keepGoing;
-  do{
-    ret = "";
-    keepGoing = false;
-    //do magic math functions
-    for (var i = 0, n = baseChars.length; i < length; i++){
-      //do floor of math.random * n to get a random number to use
-      temp = Math.floor(Math.random()*n);
-      //use temp random number to get random char
-      ret += baseChars.charAt(temp);
-
-      //check which array temp falls into
-      if (0 <= temp && temp < seperateBaseChars[0]){
-        totals[0] ++;
-      }
-      else if (seperateBaseChars[0] <= temp && temp < seperateBaseChars[1]){
-        totals[1] ++;
-      }
-      else if (seperateBaseChars[1] <= temp && temp < seperateBaseChars[2]){
-        totals[2] ++;
-      }
-      else{
-        totals[3]++;
-      }
-    }
-    console.log("totals = " + totals.concat(", "));
-    console.log("bools = " + bools.concat(", "));
-    console.log("ret = " + ret);
-
-    //check for uniqueness
-    for (var j = 0; j < 4; j++){
-      if (bools[j] && (totals[j] == 0)){
-        keepGoing = true;
-      }
-    }
-
-  }while(keepGoing);
-
-  //check if legLength and charTypes are working propperly
-  //console.log(length + " : " + input);
-
-  return ret;
+  //calls createPassword function when all inputs are obtained
+  return createPassword(input,length);
 }
 /**
- * do the magic math function to get a password. Validate that the password meets requirements
+ * do the createPassword function to get a password. Validate that the password meets requirements
  * and then return the password else recursively call itself
  * @param {[string, [Numbers]]} baseChars 
  * @param {Number} passLength 
  * @returns password
  */
-function magicMath(baseChars, passLength){
-  var tracking = new [];
+function createPassword(baseChars, passLength){
+  var tracking = [];
   for(var i = 1; i < baseChars[1].length; i++){
     tracking.push(false);
   }
@@ -126,19 +38,21 @@ function magicMath(baseChars, passLength){
 
   //generate ret
   for (var i = 0; i < passLength; i++){
-    temp = Math.floor(Math.random()*n);
-    ret += baseChars.charAt(temp);
+    temp = Math.floor(Math.random()*baseChars[0].length);
+    ret += baseChars[0].charAt(temp);
     //check which group the number is at
     for (var j = 1; j < baseChars[1].length; j++){
       if(baseChars[1][j-1] <= temp && baseChars[1][j] > temp)
         tracking[j-1]=true;
     }
   }
-
+  //check if any of the values are missing
   if(tracking.includes(false)){
-    return magicMath(baseChars, passLength);
+    //if at least one is missing repeat
+    return createPassword(baseChars, passLength);
   }
   else{
+    //else return ret
     return ret;
   }
   //do calculation
@@ -172,32 +86,37 @@ function getLength(){
 
 /**
  * uses alerts to find out what types of characters you want to use
- * @returns [combined base chars, int with binary representation of which ones where selected]
+ * @returns [combined baseChars for a password, Array of numbers representing endpoint of added arrays of characters]
  */
 function charTypes(){
   var ret = "";
   var count = 0;
+  var counts = [0];
   do{
     //alert user to action needed
     window.alert("Please select a type of character to use for the password");
     //prompt for lower
     if(window.confirm("Do you want to use lower case letters?")){
-      count += 8;
+      count = count + lower.length;
+      counts.push(count);
       ret += lower;
     }
     //prompt for upper
     if(window.confirm("Do you want to use upper case letters?")){
-      count += 4;
+      count = count + upper.length;
+      counts.push(count);
       ret += upper;
     }
     //prompt for numbers
     if(window.confirm("Do you want to use numbers?")){
-      count += 2;
+      count = count + nums.length;
+      counts.push(count);
       ret += nums;
     }
     //prompt for special chars
     if(window.confirm("Do you want to use Special Characters?")){
-      count += 1;
+      count = count + special.length;
+      counts.push(count);
       ret += special;
     }
       
@@ -207,8 +126,8 @@ function charTypes(){
     //if length is not greater then 0 tell user they messed up
     window.alert("You did not select anything...");
   }while(true);
-  console.log(count);
-  return [ret, count];
+  //console.log(count);
+  return [ret, counts];
 }
 
 // Get references to the #generate element
