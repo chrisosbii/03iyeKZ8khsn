@@ -31,28 +31,37 @@ function generatePassword() {
   baseChars = input[0];
 
   //setup seperateBaseChars for checking which char was used for validating password
-  //check if lower was used
+  //check if lower was used if used add length to the seperateBaseChars Array
   if(input[1] >= 8){
     seperateBaseChars[0] = lower.length;
     input[1] = input[1] - 8;
     bools[0] = true;
   }
-  //check if upper was used
+  //check if upper was used if used add length to the seperateBaseChars Array
   if(input[1] >= 4){
     seperateBaseChars[1] = seperateBaseChars[0] + upper.length;
     input[1] = input[1] - 4;
     bools[1] = true;
   }
-  //check if nums where used
+  else{
+    seperateBaseChars[1] = seperateBaseChars[0];
+  }
+  //check if nums where used if used add length to the seperateBaseChars Array
   if(input[1] >= 2){
     seperateBaseChars[2] = seperateBaseChars[1] + nums.length;
     input[1] = input[1] - 2;
     bools[2] = true;
   }
-  //check if special was used
+  else{
+    seperateBaseChars[2] = seperateBaseChars[1];
+  }
+  //check if special was used if used add length to the seperateBaseChars Array
   if(input[1] >= 1){
     seperateBaseChars[3] = seperateBaseChars[2] + special.length;
     bools[3] = true;
+  }
+  else{
+    seperateBaseChars[3] = seperateBaseChars[2];
   }
   console.log(seperateBaseChars.concat(", "));
 
@@ -69,13 +78,13 @@ function generatePassword() {
       ret += baseChars.charAt(temp);
 
       //check which array temp falls into
-      if (temp < seperateBaseChars[0]){
+      if (0 <= temp && temp < seperateBaseChars[0]){
         totals[0] ++;
       }
-      else if (temp < seperateBaseChars[1]){
+      else if (seperateBaseChars[0] <= temp && temp < seperateBaseChars[1]){
         totals[1] ++;
       }
-      else if (temp < seperateBaseChars[2]){
+      else if (seperateBaseChars[1] <= temp && temp < seperateBaseChars[2]){
         totals[2] ++;
       }
       else{
@@ -100,11 +109,46 @@ function generatePassword() {
 
   return ret;
 }
+/**
+ * do the magic math function to get a password. Validate that the password meets requirements
+ * and then return the password else recursively call itself
+ * @param {[string, [Numbers]]} baseChars 
+ * @param {Number} passLength 
+ * @returns password
+ */
+function magicMath(baseChars, passLength){
+  var tracking = new [];
+  for(var i = 1; i < baseChars[1].length; i++){
+    tracking.push(false);
+  }
+  var temp = 0;
+  var ret = "";
+
+  //generate ret
+  for (var i = 0; i < passLength; i++){
+    temp = Math.floor(Math.random()*n);
+    ret += baseChars.charAt(temp);
+    //check which group the number is at
+    for (var j = 1; j < baseChars[1].length; j++){
+      if(baseChars[1][j-1] <= temp && baseChars[1][j] > temp)
+        tracking[j-1]=true;
+    }
+  }
+
+  if(tracking.includes(false)){
+    return magicMath(baseChars, passLength);
+  }
+  else{
+    return ret;
+  }
+  //do calculation
+}
 
 /**
  * function to prompt user for length of password
  * needs to be equal to or greater then 8
  * needs to be less then 128
+ * @returns number between 8 and 128
  */
 function getLength(){
   var ret = 0;
