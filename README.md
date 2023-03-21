@@ -19,6 +19,8 @@ This is occomplished by maintining an array of bools and indexs for which the ch
 By doing this I can take the random generated number and check which character set the random letter is from and update a tracking bool to true.
 If all tracking is true then every case has been included, if false then it will recurssively call itself.
 
+This project can be viewed by going to [https://chrisosbii.github.io/03iyeKZ8khsn/](https://chrisosbii.github.io/03iyeKZ8khsn/)
+
 ## Sources: 
 https://github.com/coding-boot-camp/friendly-parakeet
 https://courses.bootcampspot.com/courses/3169/assignments/50921?module_item_id=920973
